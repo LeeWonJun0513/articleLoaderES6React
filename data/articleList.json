@@ -1,0 +1,20 @@
+{
+    "articles" : [     
+    {
+     "articleId":"article1",
+     "articleName":"Oliver Twist"
+    },
+    {
+     "articleId":"article2", 
+     "articleName":"Huckleberry Finn"
+    },
+    {
+     "articleId": "article3", 
+     "articleName":"My Experiments with truth"
+    },
+    {
+       "articleId": "article4", 
+       "articleName": "The lord of the rings"
+    }  
+    ]
+}
