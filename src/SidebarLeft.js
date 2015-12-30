@@ -69,7 +69,11 @@ class SidebarLeft extends React.Component
                             </li> 
                         ) ; 
                     })
-                }   
+                }
+                            <li className="clearSessionStorageButton"  
+                            onClick={this.props.clearsession}>
+                                Clear Session
+                            </li>
                 </ul>
             </div>
         );

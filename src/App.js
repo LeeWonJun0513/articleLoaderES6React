@@ -12,6 +12,7 @@ class App extends React.Component
     {
         super();
         this.updateChildrenStates=this.updateChildrenStates.bind(this);
+        this.clearSession=this.clearSession.bind(this);
     }
     
     updateChildrenStates(e)
@@ -19,14 +20,22 @@ class App extends React.Component
         this.refs.refContent.loadJSON(e.target.getAttribute('data-articlefilename'));
     }
     
+    clearSession()
+    {
+        this.refs.refContent.clearSessionStorage();
+    }
+    
     render() {      
         return (
             <div>           
-                 <div id="header">
+                <div id="header">
                     <h1>Article Loader</h1>
                 </div>
-                <SidebarLeft onclick={this.updateChildrenStates} />
+                <SidebarLeft onclick={this.updateChildrenStates} clearsession={this.clearSession}/>
                 <Content ref="refContent" />
+                < div id = "footer" >
+                    < p > Copyright &copy; Article Loader Inc. < /p> 
+                < /div>           
             </div>
         );
     }

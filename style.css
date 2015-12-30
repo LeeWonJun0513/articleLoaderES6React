@@ -8,6 +8,21 @@
     list-style: none;
 }
 
+.clearSessionStorageButton
+{
+    padding: 10px;
+    margin: 10px;
+    background-color: blue;
+    color: white;
+    cursor: pointer;
+    list-style: none;
+}
+
+.articleEditorTextArea
+{
+
+}
+
 #header
 {
     width: 100%;

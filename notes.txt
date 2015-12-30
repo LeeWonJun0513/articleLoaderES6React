@@ -62,3 +62,8 @@ bind problem in onstatereadychange and solving it using callback.
 passing callbacks while using ajax.
 using event.target to get custom data attributes, getAttribute()
 jsx return statements in render() : correct alignment and optional paranthesis.
+
+---------------------------------
+how to auto resize a <textarea> element.
+how to write JSON objects to localStorage and retrieve them
+how to delete all of content of localStorage.
