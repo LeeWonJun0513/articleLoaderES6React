@@ -1,4 +1,5 @@
 import React from 'react';
+import Immutable from 'immutable';
 
 class SidebarLeft extends React.Component
 {   
@@ -9,14 +10,14 @@ class SidebarLeft extends React.Component
         this.i=0;
         this.state = {
             articleList : 
-                {
-                    articles : [     
+                 Immutable.fromJS({
+                    articles :[     
                     {
                      articleId:"article1",
                      articleName:"Oliver Twist"
                     }  
                     ]
-                }            
+                })            
         }
 //        this.loadArticleList=this.loadArticleList.bind(this);
         this.loadArticleList();
@@ -27,7 +28,9 @@ class SidebarLeft extends React.Component
 
     setArticleList = (articleList)=>
     {
-        this.setState( {articleList : articleList } );
+//        console.log("arg in setArticleList:", articleList);
+        this.setState( {articleList : Immutable.fromJS(articleList) } );
+        console.log("state set");
     }
 
 //    loadArticleList(callback)
@@ -42,6 +45,7 @@ class SidebarLeft extends React.Component
                  if (http_request.readyState == 4) 
                  {
                      var jsonObj = JSON.parse(http_request.responseText);
+//                             console.log(jsonObj);
                      self.setArticleList(jsonObj);
                  }
              }
@@ -52,20 +56,21 @@ class SidebarLeft extends React.Component
     
     render()
     {     
+        console.log("articleList from state: ",this.state.articleList.get('articles'));
         return (
             <div id="sidebarLeft">
                 <h2>Select Article</h2>
                 <ul>
                 {
-                    this.state.articleList.articles.map(
+                   this.state.articleList.get('articles').map(
                     (article)=>{
                         return(
                             <li className="menuItem" 
-                            data-articlefilename={article.articleId} 
-                            id={article.articleId} 
-                            key={article.articleId} 
+                            data-articlefilename={article.get('articleId')} 
+                            id={article.get('articleId')} 
+                            key={article.get('articleId')} 
                             onClick={this.props.onclick}>
-                            {article.articleName}
+                            {article.get('articleName')}
                             </li> 
                         ) ; 
                     })

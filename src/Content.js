@@ -1,14 +1,17 @@
 import React from 'react';
+import Immutable from 'immutable';
 
 class Content extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
+            article: Immutable.fromJS({
             articleId: "defaultarticleid",
             articleTitle: "Article title",
             articleBody: "Article Body",
             articleView: "saved"
+            })
         }
         this.saveArticle = this.saveArticle.bind(this);
         this.editArticle = this.editArticle.bind(this);
@@ -19,12 +22,15 @@ class Content extends React.Component {
 
     setArticle = (article) => {
 //        console.log("setArticle being called");
+            console.log("incoming article to setArticle:",article);
+
         this.setState({
-            articleId: article.articleId,
-            articleTitle: article.articleTitle,
-            articleBody: article.articleBody
+            article: this.state.article.set('articleId',article.articleId)
+                                        .set('articleTitle',article.articleTitle)
+                                        .set('articleBody', article.articleBody)
         });
-        console.log("state:",this.state);
+//        console.log("state:",this.state);
+        console.log("state:",this.state.article.toJS());
         this.writeArticleToSessionStorage(article.articleId, article);
 //        console.log(this.state);
     }
@@ -63,6 +69,10 @@ class Content extends React.Component {
         }
     }
 
+    componentDidUpdate(prevProps,prevState){
+        console.log("The current state after update", this.state.article.toJS()) ;
+    }
+
     writeArticleToSessionStorage(key, value)
     {
         console.log("inwrite: ",value);
@@ -80,20 +90,22 @@ class Content extends React.Component {
 
     editArticle()
     {
-        this.setState({ articleView: "edit" });
+        this.setState({ article : this.state.article.set("articleView", "edit") });
     }
     
     saveArticle()
     {     
-          let tempState=this.state;
-          tempState.articleView="saved";
-          tempState.articleBody=this.refs.articleBodyEditorTextArea.value;
-          this.setArticle(tempState);
+        //          this.setArticle(
+        //            this.state.article.set("articleBody", this.refs.articleBodyEditorTextArea.value).toJS()         
+        //          );          
+        this.setState({article: this.state.article.set("articleView", "saved").set("articleBody", this.refs.articleBodyEditorTextArea.value) });
+        this.writeArticleToSessionStorage(this.state.article.get("articleId"),  this.state.article.set("articleView", "saved").set("articleBody", this.refs.articleBodyEditorTextArea.value).toJS() );
+       
     }
 
     cancelEditArticle()
     {
-         this.setState({ articleView: "saved" });       
+         this.setState({ article : this.state.article.set("articleView", "saved") });       
     }
 
     render() {
@@ -101,10 +113,10 @@ class Content extends React.Component {
 //        console.log(localStorage.getItem("check"));
         return <div id = "content" >
                     < div id = "article" >
-                        < h2 id = "articleTitle" >{this.state.articleTitle}< /h2> 
-                        < p id = "articleBody" >{ this.state.articleBody} < /p> 
+                        < h2 id = "articleTitle" >{this.state.article.get('articleTitle')}< /h2> 
+                        < p id = "articleBody" >{ this.state.article.get('articleBody')} < /p> 
                         { 
-                            this.state.articleView != "edit" ? 
+                            this.state.article.get('articleView')!= "edit" ? 
                             <input type="button" value="edit" onClick={this.editArticle}/>  
                                 :
                             <div>
@@ -112,7 +124,7 @@ class Content extends React.Component {
                                     ref="articleBodyEditorTextArea" 
                                     className="articleBodyEditorTextArea" 
                                     rows="10" cols="100" >
-                                    {this.state.articleBody}   
+                                    {this.state.article.get('articleBody')}   
                                 </textarea>
                                 <br/>
                                 <input type="button" value="save" onClick={this.saveArticle}/>
